@@ -1,0 +1,40 @@
+
+---
+format: html
+---
+
+```{r}
+library(tidyverse)
+```
+
+## Example 1
+
+```{r}
+draw_points = function(n) {
+  list(
+    x = runif(n, 0, 1),
+    y = runif(n, 0 ,1)
+  )
+}
+
+in_unit_circle = function(d) {
+  sqrt(d$x^2 + d$y^2) <= 1
+}
+
+draw_points(1e4) |>
+  in_unit_circle() |>
+  sum() |>
+  (\(x) (4*x /1e4))()
+```
+
+```{r}
+tibble(
+  n = 10^(3:6)
+) |>
+  mutate(
+    draws = map(n, draw_points),
+    n_in_unit_circle = map_int(draws, function(x) sum(in_unit_circle(x))),
+    pi_approx = 4*n_in_unit_circle/n,
+    pi_error = abs(pi_approx - pi)
+  )
+```
