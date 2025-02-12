@@ -11,6 +11,21 @@ library(palmerpenguins)
 ## Exercise 1
 
 ```{r}
+penguins |>
+  filter(!is.na(sex)) |>
+  mutate(
+    species = factor(species, levels = c("Gentoo", "Chinstrap", "Adelie"))
+  ) |>
+  ggplot(
+    aes(x = body_mass_g, fill = species)
+  ) +
+  geom_density(alpha = 0.5, color = NA) +
+  facet_wrap(~sex, nrow=2) +
+  labs(
+    x = "Body mass (g)",
+    fill = "Species",
+    y = ""
+  )
 
 ```
 
@@ -18,6 +33,27 @@ library(palmerpenguins)
 ## Exercise 2
 
 ```{r}
+ggplot(
+  penguins,
+  aes(x = flipper_length_mm, y = bill_length_mm)
+) +
+  geom_point(
+    aes(color = species, shape = species),
+    size = 3, alpha = 0.8,
+    na.rm = TRUE
+  ) +
+  geom_smooth(method = "lm", se = FALSE, aes(color = species)) +
+  scale_color_manual(values = c("darkorange", "purple", "cyan4")) +
+  theme_bw()
 
 ```
+
+
+
+
+
+
+
+
+
 
