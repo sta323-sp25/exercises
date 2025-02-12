@@ -1,0 +1,23 @@
+---
+format: html
+---
+
+```{r}
+#| label: setup
+library(tidyverse)
+library(palmerpenguins)
+```
+
+## Exercise 1
+
+```{r}
+
+```
+
+
+## Exercise 2
+
+```{r}
+
+```
+
