@@ -1,0 +1,49 @@
+---
+format: html
+---
+
+```{r}
+#| label: setup
+library(tidyverse)
+```
+
+## Exercise 1
+
+```{r}
+x = c("Jeremy Cruz", "Nathaniel Le", "Jasmine Chu", "Bradley Calderon Raygoza", 
+"Quinten Weller", "Katelien Kanamu-Hauanio", "Zuhriyaa al-Amen", 
+"Travale York", "Alexis Ahmed", "David Alcocer", "Jairo Martinez", 
+"Dwone Gallegos", "Amanda Sherwood", "Hadiyya el-Eid", "Shaimaaa al-Can", 
+"Sarah Love", "Shelby Villano", "Sundus al-Hashmi", "Dyani Loving", 
+"Shanelle Douglas")
+```
+
+* detects if the person’s first name starts with a vowel (a,e,i,o,u)
+
+```{r}
+str_subset(x, "")
+```
+
+* detects if the person’s last name starts with a vowel
+
+```{r}
+str_subset(x, "")
+```
+
+* detects if either the person’s first or last name start with a vowel
+
+```{r}
+str_subset(x, "")
+```
+
+* detects if neither the person’s first nor last name start with a vowel
+
+```{r}
+str_subset(x, "")
+```
+
+
+## Exercise 2
+
+```{r}
+```
