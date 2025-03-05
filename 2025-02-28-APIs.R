@@ -68,9 +68,6 @@ last_response() |>
   View()
 
 
-### 
-
-
 ### Create a gist
 
 
