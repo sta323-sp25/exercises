@@ -53,7 +53,8 @@ request("https://api.github.com") |>
   req_perform()
 
 last_response() |>
-  resp_body_json()
+  resp_body_json() |>
+  View()
 
 ### Get all org repos
 
