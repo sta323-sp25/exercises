@@ -18,20 +18,13 @@ function(res, arg="") {
 }
 
 
-#* Return the sum of two numbers
-#* @param a:numeric The first number to add
-#* @param b:numeric The second number to add
-#* @post /sum
-#* @get /sum
-function(req, res, a, b) {
-  as.numeric(a) + as.numeric(b)
-}
 
 #* @get /error
 #* @serializer html
 function() {
   stop("This is an error")
 }
+
 
 #* @get /forbidden
 #* @serializer text
