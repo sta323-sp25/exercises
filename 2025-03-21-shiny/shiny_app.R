@@ -29,12 +29,14 @@ ui = bslib::page_sidebar(
 
 server = function(input, output, session) {
   
+  # Responsible for keeping the n values < x
   observe({
     updateSliderInput(inputId = "n", min=input$x)  
   })
   
+  # Render table of summary statistics
   output$table = renderTable({
-    df() |>
+    df() |> # Need to use () since df is a reactive
       group_by(distribution) |>
       summarize(
         mean = sum(p*density) / n(),
@@ -44,6 +46,7 @@ server = function(input, output, session) {
       )
   })
   
+  # Render plot
   output$plot = renderPlot({
     g = ggplot(df(), aes(x=p, y=density, color=distribution)) + 
       geom_line(linewidth=1.5)+
@@ -58,6 +61,7 @@ server = function(input, output, session) {
     g
   })
   
+  # Reactive that calculates distributions
   df = reactive({
     req(input$a)
     req(input$b)
@@ -73,13 +77,14 @@ server = function(input, output, session) {
       mutate(
         prior = dbeta(p, input$a, input$b),
         likelihood = dbinom(input$x, input$n, p) |>
-          (\(x) {x / (sum(x) / n())})(),
+          (\(x) {x / (sum(x) / n())})(), # Normalize likelihood for common scale
         posterior = dbeta(p, input$x + input$a, input$n - input$x + input$b)
       ) |>
       pivot_longer(
         cols = -p, names_to = "distribution", values_to = "density"
       ) |>
       mutate(
+        # Factor to keep order: prior -> likelihood -> posterior
         distribution = as_factor(distribution)
       )
   })
