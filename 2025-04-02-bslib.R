@@ -4,6 +4,9 @@ library(shiny)
 library(bslib)
 
 ui = bslib::page_sidebar(
+  theme = bs_theme() |>
+    bs_theme_update(preset = "cosmo"),
+  
   title = "This is our Shiny app",
   sidebar = bslib::sidebar(
     h3("Likelihood"),
@@ -13,21 +16,47 @@ ui = bslib::page_sidebar(
     h3("Prior"),
     numericInput("a", "# of prior heads", value=5),
     numericInput("b", "# of prior tails", value=5),
-    
-    checkboxInput("show_opt", "Show options", value=FALSE),
-    conditionalPanel(
-      "input.show_opt == true",
-      h3("Options"),
-      checkboxInput("bw", "Use theme_bw", value=FALSE),
-      checkboxInput("facet", "Use facets", value=FALSE)
-    )
-    
   ),
-  plotOutput("plot"),
-  tableOutput("table")
+  
+  navset_card_tab(
+    nav_panel(
+      title = "Plot",
+      card(
+        card_header(
+          #"Plot",
+          popover(
+            fontawesome::fa("gear", title = "Settings"),
+            title = "Settings",
+            checkboxInput("bw", "Use theme_bw", value=FALSE),
+            checkboxInput("facet", "Use facets", value=FALSE)
+          ),
+          class = "bg-primary"
+        ),
+        
+        card_body(
+          plotOutput("plot")
+        ),
+        full_screen = TRUE
+      )
+    ),
+    nav_panel(
+      title = "Table",
+      card(
+        #card_header(
+        #  "Table",
+        #  class = "bg-secondary"
+        #),
+        card_body(
+          tableOutput("table")
+        )
+      )
+    )
+  )
 )
 
 server = function(input, output, session) {
+  bs_themer()
+  
   
   # Responsible for keeping the n values < x
   observe({
@@ -36,6 +65,9 @@ server = function(input, output, session) {
   
   # Render table of summary statistics
   output$table = renderTable({
+    
+    print("Calculating the table!")
+    
     df() |> # Need to use () since df is a reactive
       group_by(distribution) |>
       summarize(
@@ -48,6 +80,9 @@ server = function(input, output, session) {
   
   # Render plot
   output$plot = renderPlot({
+    
+    print("Calculating the plot!")
+    
     g = ggplot(df(), aes(x=p, y=density, color=distribution)) + 
       geom_line(linewidth=1.5)+
       geom_ribbon(aes(ymax=density, fill=distribution),ymin=0, alpha=0.5)
@@ -89,5 +124,7 @@ server = function(input, output, session) {
       )
   })
 }
+
+thematic::thematic_shiny()
 
 shinyApp(ui = ui, server = server)
