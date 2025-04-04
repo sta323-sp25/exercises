@@ -2,6 +2,45 @@ library(tidyverse)
 library(future)
 library(furrr)
 
+## profvis
+
+
+### Demo 1
+
+n = 1e6
+d = tibble(
+  x1 = rt(n, df = 3),
+  x2 = rt(n, df = 3),
+  x3 = rt(n, df = 3),
+  x4 = rt(n, df = 3),
+  x5 = rt(n, df = 3),
+) |>
+  mutate(y = -2*x1 - 1*x2 + 0*x3 + 1*x4 + 2*x5 + rnorm(n))
+
+profvis::profvis({
+  lm(y~., data=d)
+})
+
+### Demo 2
+
+profvis::profvis({
+  data = data.frame(value = runif(5e4))
+  
+  data$sum[1] = data$value[1]
+  for (i in seq(2, nrow(data))) {
+    data$sum[i] = data$sum[i-1] + data$value[i]
+  }
+})
+
+profvis::profvis({
+  x = runif(5e4)
+  sum = x[1]
+  for (i in seq(2, length(x))) {
+    sum[i] = sum[i-1] + x[i]
+  }
+})
+
+
 ## furrr example
 
 ### Setup
