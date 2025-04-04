@@ -10,7 +10,6 @@ set.seed(20250404)
 d = data.frame(x = 1:120) |>
   mutate(y = sin(2*pi*x/120) + runif(length(x),-1,1))
 
-
 l = loess(y ~ x, data=d)
 p = predict(l, se=TRUE)
 
